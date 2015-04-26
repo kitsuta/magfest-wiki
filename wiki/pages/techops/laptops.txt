@@ -1,0 +1,44 @@
+====== Laptops ======
+
+Techops maintains about 170 laptops for various purposes. In general, we have to support three main use cases:
+  * Registration Kiosks
+  * Standard Desktop Use
+  * Challenges
+
+===== Registration Kiosks =====
+The registration kiosks are one of the most precarious laptop deployments we are responsible. They are used by public attendees to pre-register at the door. This includes processing credit card payments, and as such requires a great deal of attention to security. For MAGFest 8.5 and 13, we used Porteus Kiosk to run these systems. Porteus is an extremely minimal Linux system that runs out of an immutable filesystem. This means that an attacker would have to boot into another operating system to inject malicious code. Porteus boots directly into firefox, and allows us to remove the nav-bar as well as the tab bar. We can also block the user from visiting websites other than magfest.org, or whatever sites are needed for pre-registration. By default, it also disables all context menus, keyboard shortcuts, external storage devices, basically every practical attack vector.
+
+Do to the immutability of the Porteus filesystem, as well as their system architecture, making changes to the image is extremely painful. The best way is using the customization utility they provide. Go to [[http://porteus-kiosk.org/]] and download the latest Porteus image. Copy it to a flash drive:
+''dd if=porteus.iso of=/dev/sdb bs=1M''
+Ensure that you select the correct destination device. Insert the flash drive to a computer and boot it. Porteus will eventually bring up a dialog box and walk you through the customization. Here are a few things we normally do to our image:
+  * Whitelist magfest.org (NOTE: DO NOT BLOCK THE CREDIT CARD PROCESSOR! DO NOT!)
+  * Set the timezone to America/New_York and ntp server to ntp.magfest.net
+  * Set a magfest themed wallpaper
+  * Enable autoreload with an interval of 3-4 minutes
+  * Set the homepage to this year's registration page (Talk to the Über team.)
+  * Disable external storage and printers
+  * Disable the nav-bar
+  * Enable sshd and set a STRONG password
+  * Anything else that seems right
+
+After completing the wizard, Porteus will leave the newly created iso in /mnt. Note that this is actually only in memory. Porteus cannot mount any filesystems. They modified the kernel to only support ISO9660, which is immutable anyways. Instead, it saves the new iso in ram, and will then open a webbrowser so that you can email it to yourself or upload it somewhere. Annoying, but clever.
+
+After creating your image, image it onto a system and test to make sure it works. In particular, test it with the current Über system to make sure credit cards and registration are in the clear. We have been bitten by this before, please check.
+===== Desktop Systems =====
+Most of our users want a browser and basic word processing. At MAGFest 12, we deployed Linux Mint. This worked well enough, but users had some issues with usability. At MAGFest 13 we used Arch Linux. This was an interesting choice, to say the least. Surprisingly, it worked great. The most important thing for the desktop systems is to ensure that users without Linux experience can perform common tasks. Several things that have been requested in the past are:
+  * Printing Support
+  * Wireless Networking Support
+  * Setting Display Resolution/Rotation/Cloning
+Place icons for the most common tasks on the desktop. It is messy, but makes things simple for new users. We also do a fair bit of branding. We set a custom desktop wallpaper, screensaver, homepage, boot logo, motd, etc. Don't worry too much about it, but it is kinda fun, and we already have the puppet rules for it...
+
+Users also want a fair number of applications installed. Along with whatever command line utilities you think are useful, make sure to install:
+  * Firefox
+  * Google Chrome
+  * Flash Player
+  * LibreOffice
+  * NetworkManager and a toolbar applet for it
+  * CUPS
+
+===== Challenges =====
+Before/During MAGFest 13, we re-wrote the challenge software from the ground up. The laptops need to run whatever emulators the challenge coordinators want to use. You should receive a json file that describes the challenges in use for the current year. This is loaded by our new software to generate the menu. The software still needs some work. Talk to Mark Murnane and Greg Murnane for more information. 
+

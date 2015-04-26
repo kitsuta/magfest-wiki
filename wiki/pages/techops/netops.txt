@@ -1,0 +1,15 @@
+====== Introduction to NetOps ======
+NetOps is a group within TechOps dedicated to designing, building and maintaining a working network infrastructure for all of MAGFest, as well as providing training and support for staff interested in contributing to the MAGFest network.  We also manage the VoIP phones, because we're cool like that.
+
+===== Who is NetOps? =====
+  * Joe Cooter (nikgod)
+  * Ian Underwood (eyetack)
+  * Jon Mazzetta
+  * Robert Scullin (atg)
+  * AND YOU (add your name if you want to join the fun)
+
+===== HELP!  There's a problem with the network! =====
+Get in touch with the [[:techops|TechOps]] desk, they'll know what to do (probably).
+
+===== Sounds cool.  Can I help? =====
+For the love of all that is holy, YES!  Get in touch with one of the people mentioned above and they'll be able to help you out.  Or, hit up the [[:techops|TechOps]] mailing list.

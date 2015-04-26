@@ -1,0 +1,19 @@
+~~NOTOC~~
+
+{{ :techops:techops.png |}}
+====== Department Heads ======
+  * Emilie Selbo
+  * Ian McCombs (optik)
+  * Robert Scullin (atg)
+  * Joe Cooter (nikgod)
+  * Adam Bullock (thatguy)
+
+
+====== Panels AV ======
+
+====== IT ======
+[[techops:laptops|Laptops]]\\ 
+
+====== NetOps ======
+[[techops:netops|Introduction to NetOps]]\\ 
+[[techops:netops:architecture|Architecture Overview]]\\ 

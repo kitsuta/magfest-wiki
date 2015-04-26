@@ -1,0 +1,24 @@
+====== MAGFest Network Architecture ======
+The MAGFest network consists of multiple zones, interconnected by a flat layer 2 backbone.  Backbone connectivity is provided by a mix of magfest-owned equipment connected with purpose-run cable, dark fiber connectivity provided by the hotel, and lit vlan ports on hotel switches.  In addition, a redundant core routing infrastructure is deployed with core backbone switches to provide Internet connectivity, and fallback routing for zone to zone communication.
+
+Wherever feasible, it is preferable for us to run our own cable for interconnection to avoid charges from the hotel for interconnection.
+
+===== Network Zones =====
+Each network zone is formed by a layer 3 switch, and can be extended with trunk ports to layer 2 switches for increased port capacity or to increase geographic reach.  All zone switches discover and route traffic to each other over the backbone by way of a dynamic routing protocol.  In addition, all zone switches have a default static route entry to the core routers for failover in case of issues with dynamic routing.  In turn, the core routers have static routes defined to every zone switch.  Each zone defines the following networks:
+
+==== Data ====
+This network is intended for generic connections to the MAGFest network.  Any network endpoint aside from VoIP phones, WAPs, or core infrastructure servers should be connected to this network.  As any MAGFest staff member or attendee can connect any device to this network, it should be considered untrusted in all security policies.  Internet access is provided to devices on this network with little restriction.
+
+==== Services ====
+This network is intended for connections to VoIP phones, wireless access points, printers and other internal infrastructure.  Access should be limited to devices under the control of TechOps, and Internet connectivity from devices on this network should be closely monitored and considered anomalous.
+
+==== Local Zone ====
+This network is intended for layer 2 connectivity between devices inside this zone only.  Zone switches must not provide a gateway IP or DHCP services on this network.  Internet access and/or access to other zones must not be provided.
+
+
+===== Core Routers =====
+Core routers provide Internet connectivity, as well as providing NAT translation as necessary.  In addition, the core routers provide connectivity to the wireless controllers.  The core routers implement redundancy via a first hop redundancy protocol (such as VRRP).
+
+===== Backbone =====
+The backbone consists entirely of layer 2 switches, with interconnection points to the hotel network to extend the backbone across hotel vlan ports.  Since the hotel network and MAGFest backbone exist as two separate spanning tree entities, care must be taken to avoid loops in this environment.  Additionally, servers providing core network services, or requiring increased bandwidth may be directly connected to this backbone network.  Since many of these services are sensitive, any and all unused ports on backbone switches must be disabled, and strict port security policies must be defined.
+

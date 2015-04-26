@@ -1,0 +1,38 @@
+====== Heimdall ======
+Heimdall is a proposal for an integrated monitoring and notification system.  It's designed to monitor all MAG infrastructure during the event, and notify responsible parties when components have failed, or are failing.  Hopefully, this will enable techops and other event staff to proactively deal with issues before they impact the event.
+
+As a part of this design, heimdall is designed to interface with many different communications paths in an attempt to decrease the likelihood that any outage will totally inhibit the ability for the system to send notifications.  Additionally, heimdall is designed with modularity, so different notification methods can be implemented and used on a per-individual or per-group basis.
+
+====== Architecture ======
+Heimdall is a distributed architecture, designed to be easily scalable and highly redundant.  It consists of the following components:
+  * Dispatcher
+  * Comm worker
+  * AMQP message broker
+  * Redis
+  * MongoDB
+===== Dispatcher =====
+Dispatcher nodes listen for incoming notifications via REST API, and processes jobs for Comm worker nodes.  They keep track of the state of all notifications in MongoDB, and provide a web dashboard for administrative access to the application.  Additionally, dispatch nodes listen to an AMQP feedback queue for status messages from Comm worker nodes, as well as incoming communications from users for acknowledgement and other actions.
+===== Comm worker =====
+Comm worker nodes accept notification messages from the dispatcher nodes for a specific communication type, and contain all logic to send and accept messages from that communication type.  A comm worker can also listen for incoming messages if the underlying communication technology supports it.  In this case, it will parse and send all incoming messages to the dispatch feedback queue for processing.
+
+A comm worker instance can only send a single message at once, so for communication technologies that have multiple channels, multiple instances should be run.  For instances where resources are shared among multiple nodes, Redis can be used as a distributed lock.
+===== AMQP message broker =====
+The message broker contains job queues and message routing infrastructure to facilitate communication with dispatcher nodes and comm worker nodes.  It also contains status information for all jobs currently in-flight, and will detect and retry messages that comm workers fail to deliver.
+===== Redis =====
+Redis is a high-speed key-value store with an emphasis on consistency.  It is used as a distributed lock manager for comm worker nodes operating with shared resources.  It also contains updates from running comm worker instances to detect crashed, stale, or offline nodes.
+===== MongoDB =====
+MongoDB is a database that contains historical records of notifications, their status, and content.  This information is used by the dispatch nodes to include in web dashboards, as well as a sanity check on node startup.
+
+MongoDB also may contain user information related to contact addresses and authentication information, if that information is not stored externally (e.g. LDAP)
+
+====== Notification Methods ======
+During the initial design phase, the following notification methods are being considered:
+  * E-Mail
+  * XMPP/Jabber
+  * Slack
+  * SMS over GSM
+  * SMS over Internet
+  * SMS over PSTN (using TAP)
+  * Paging over Internet
+  * Paging over PSTN (using TAP)
+  * Push Notification via Pusher

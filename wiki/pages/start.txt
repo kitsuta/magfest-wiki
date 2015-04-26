@@ -1,3 +1,7 @@
-Welcome to Hackafé.net!
-<Insert detailed documentation here>
-test
+====== MAGFest Wiki ======
+Hi guys.  This is a wiki where we can document stuff for staff to reference later.
+
+===== Departments =====
+[[techops|TechOps]]
+
+ 

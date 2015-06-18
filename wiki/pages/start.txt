@@ -3,5 +3,4 @@ Hi guys.  This is a wiki where we can document stuff for staff to reference late
 
 ===== Departments =====
 [[techops|TechOps]]
-
- 
+[[registration|Registration]]
